@@ -10,10 +10,13 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 # STEP 1
 # Replace None with your code
 df_boston = pd.read_sql("""
-    SELECT employees.firstName, employees.lastName, employees.jobTitle
-    FROM employees
-    JOIN offices ON employees.officeCode = offices.officeCode
-    WHERE offices.city = 'Boston'
+SELECT firstName,
+       lastName,
+       jobTitle
+FROM employees
+INNER JOIN offices
+    ON employees.officeCode = offices.officeCode
+WHERE city = 'Boston';
 """, conn)
 # STEP 2
 # Replace None with your code
@@ -80,7 +83,7 @@ df_product_sold = pd.read_sql("""
 df_total_customers = pd.read_sql("""
     SELECT p.productName, 
            p.productCode, 
-           COUNT(DISTINCT o.customerNumber) AS numpurchasers
+           COUNT(DISTINCT o.customerNumber)
     FROM products p
     JOIN orderdetails od ON p.productCode = od.productCode
     JOIN orders o ON od.orderNumber = o.orderNumber
