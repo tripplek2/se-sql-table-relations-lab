@@ -64,7 +64,6 @@ df_credit = pd.read_sql("""
     GROUP BY e.employeeNumber
     HAVING AVG(c.creditLimit) > 90000
     ORDER BY num_customers DESC;
-    LIMIT 4;
 """, conn)
 
 # STEP 7
