@@ -62,9 +62,10 @@ df_credit = pd.read_sql("""
     SELECT e.employeeNumber, e.firstName, e.lastName, COUNT(c.customerNumber) AS num_customers
     FROM employees e
     JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
-    GROUP BY e.employeeNumber, e.firstName, e.lastName
+    GROUP BY e.employeeNumber
     HAVING AVG(c.creditLimit) > 90000
     ORDER BY num_customers DESC;
+    LIMIT 4;
 """, conn)
 
 # STEP 7
