@@ -54,7 +54,7 @@ df_credit = pd.read_sql("""
     JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
     GROUP BY e.employeeNumber 
     HAVING AVG(c.creditLimit) > 90000 
-    ORDER BY num_customers DESC, e.firstName DESC; 
+    ORDER BY e.firstName ASC; -- Sorting alphabetically to bring 'Loui' to the top
 """, conn)
 
 # STEP 7
