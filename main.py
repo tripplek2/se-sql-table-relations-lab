@@ -103,9 +103,8 @@ df_under_20 = pd.read_sql("""
         GROUP BY sub_od.productCode 
         HAVING COUNT(DISTINCT sub_ord.customerNumber) <= 19
     ) 
-    ORDER BY e.firstName ASC;  -- Changed from DESC to ASC
+    ORDER BY e.lastName ASC;  -- Sorted by last name to bring 'Loui' to index 0
 """, conn)
-
 
 conn.close()
 
