@@ -7,19 +7,14 @@ conn = sqlite3.connect('data.sqlite')
 pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 
 # STEP 1
-# Replace None with your code
 df_boston = pd.read_sql("""
-SELECT
-    e.firstName,
-    e.lastName,
-    e.jobTitle
-FROM employees AS e
-INNER JOIN offices AS o
-    ON e.officeCode = o.officeCode
-WHERE o.city = 'Boston';
+    SELECT DISTINCT firstName, lastName 
+    FROM employees 
+    JOIN offices ON employees.officeCode = offices.officeCode 
+    WHERE city = 'Boston';
 """, conn)
+
 # STEP 2
-# Replace None with your code
 df_zero_emp = pd.read_sql("""
     SELECT o.officeCode, o.city
     FROM offices o
@@ -28,7 +23,6 @@ df_zero_emp = pd.read_sql("""
 """, conn)
 
 # STEP 3
-# Replace None with your code
 df_employee = pd.read_sql("""
     SELECT e.firstName, e.lastName, o.city, o.state
     FROM employees e
@@ -37,7 +31,6 @@ df_employee = pd.read_sql("""
 """, conn)
 
 # STEP 4
-# Replace None with your code
 df_contacts = pd.read_sql("""
     SELECT c.contactFirstName, c.contactLastName, c.phone, c.salesRepEmployeeNumber
     FROM customers c
@@ -47,7 +40,6 @@ df_contacts = pd.read_sql("""
 """, conn)
 
 # STEP 5
-# Replace None with your code
 df_payment = pd.read_sql("""
     SELECT c.contactFirstName, c.contactLastName, p.amount, p.paymentDate
     FROM customers c
@@ -56,18 +48,16 @@ df_payment = pd.read_sql("""
 """, conn)
 
 # STEP 6
-# Replace None with your code
 df_credit = pd.read_sql("""
-    SELECT e.employeeNumber, e.firstName, e.lastName, COUNT(c.customerNumber) AS num_customers
-    FROM employees e
-    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
-    GROUP BY e.employeeNumber
-    HAVING AVG(c.creditLimit) > 90000
-    ORDER BY num_customers DESC;
+    SELECT e.employeeNumber, e.firstName, e.lastName, COUNT(c.customerNumber) AS num_customers 
+    FROM employees e 
+    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
+    GROUP BY e.employeeNumber 
+    HAVING AVG(c.creditLimit) > 90000 
+    ORDER BY num_customers DESC, e.firstName DESC; 
 """, conn)
 
 # STEP 7
-# Replace None with your code
 df_product_sold = pd.read_sql("""
     SELECT p.productName, 
            COUNT(DISTINCT od.orderNumber) AS numorders, 
@@ -79,7 +69,6 @@ df_product_sold = pd.read_sql("""
 """, conn)
 
 # STEP 8
-# Replace None with your code
 df_total_customers = pd.read_sql("""
     SELECT p.productName, 
            p.productCode, 
@@ -92,7 +81,6 @@ df_total_customers = pd.read_sql("""
 """, conn)
 
 # STEP 9
-# Replace None with your code
 df_customers = pd.read_sql("""
     SELECT COUNT(c.customerNumber) AS n_customers, o.officeCode, o.city
     FROM offices o
@@ -102,7 +90,6 @@ df_customers = pd.read_sql("""
 """, conn)
 
 # STEP 10
-# Replace None with your code
 df_under_20 = pd.read_sql("""
 SELECT DISTINCT
     e.employeeNumber,
