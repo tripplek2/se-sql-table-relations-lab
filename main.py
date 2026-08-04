@@ -8,9 +8,9 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 
 # STEP 1
 df_boston = pd.read_sql("""
-    SELECT e.firstName, e.lastName, e.jobTitle 
+    SELECT e.firstName, e.lastName
     FROM employees e
-    JOIN offices o ON e.officeCode = o.officeCode 
+    JOIN offices o ON e.officeCode = o.officeCode
     WHERE o.city = 'Boston';
 """, conn)
 
@@ -32,13 +32,12 @@ df_employee = pd.read_sql("""
 
 # STEP 4
 df_contacts = pd.read_sql("""
-    SELECT c.contactFirstName, c.contactLastName, c.phone, c.salesRepEmployeeNumber 
-    FROM customers c 
-    LEFT JOIN orders o ON c.customerNumber = o.customerNumber 
-    WHERE o.orderNumber IS NULL 
-    ORDER BY c.contactFirstName ASC, c.contactLastName ASC;  -- Updated sorting here
+    SELECT c.contactFirstName, c.contactLastName, c.phone, c.salesRepEmployeeNumber
+    FROM customers c
+    LEFT JOIN orders o ON c.customerNumber = o.customerNumber
+    WHERE o.orderNumber IS NULL
+    ORDER BY c.contactLastName ASC;
 """, conn)
-
 # STEP 5
 df_payment = pd.read_sql("""
     SELECT c.contactFirstName, c.contactLastName, p.amount, p.paymentDate
@@ -91,20 +90,20 @@ df_customers = pd.read_sql("""
 
 # STEP 10
 df_under_20 = pd.read_sql("""
-    SELECT DISTINCT e.employeeNumber, e.firstName, e.lastName, o.city, o.officeCode 
-    FROM employees e 
-    JOIN offices o ON e.officeCode = o.officeCode 
-    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber 
-    JOIN orders ord ON c.customerNumber = ord.customerNumber 
-    JOIN orderdetails od ON ord.orderNumber = od.orderNumber 
+    SELECT DISTINCT e.employeeNumber, e.firstName, e.lastName, o.city, o.officeCode
+    FROM employees e
+    JOIN offices o ON e.officeCode = o.officeCode
+    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+    JOIN orders ord ON c.customerNumber = ord.customerNumber
+    JOIN orderdetails od ON ord.orderNumber = od.orderNumber
     WHERE od.productCode IN (
-        SELECT sub_od.productCode 
-        FROM orderdetails sub_od 
-        JOIN orders sub_ord ON sub_od.orderNumber = sub_ord.orderNumber 
-        GROUP BY sub_od.productCode 
+        SELECT sub_od.productCode
+        FROM orderdetails sub_od
+        JOIN orders sub_ord ON sub_od.orderNumber = sub_ord.orderNumber
+        GROUP BY sub_od.productCode
         HAVING COUNT(DISTINCT sub_ord.customerNumber) <= 19
-    ) 
-    ORDER BY e.employeeNumber;
+    )
+    ORDER BY e.firstName DESC;
 """, conn)
 
 conn.close()
