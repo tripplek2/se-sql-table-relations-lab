@@ -8,10 +8,10 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 
 # STEP 1
 df_boston = pd.read_sql("""
-    SELECT DISTINCT firstName, lastName 
-    FROM employees 
-    JOIN offices ON employees.officeCode = offices.officeCode 
-    WHERE city = 'Boston';
+    SELECT e.firstName, e.lastName, e.jobTitle 
+    FROM employees e
+    JOIN offices o ON e.officeCode = o.officeCode 
+    WHERE o.city = 'Boston';
 """, conn)
 
 # STEP 2
@@ -98,11 +98,11 @@ df_under_20 = pd.read_sql("""
     JOIN orders ord ON c.customerNumber = ord.customerNumber 
     JOIN orderdetails od ON ord.orderNumber = od.orderNumber 
     WHERE od.productCode IN (
-        SELECT od.productCode 
-        FROM orderdetails od 
-        JOIN orders ord ON od.orderNumber = ord.orderNumber 
-        GROUP BY od.productCode 
-        HAVING COUNT(DISTINCT ord.customerNumber) <= 19
+        SELECT sub_od.productCode 
+        FROM orderdetails sub_od 
+        JOIN orders sub_ord ON sub_od.orderNumber = sub_ord.orderNumber 
+        GROUP BY sub_od.productCode 
+        HAVING COUNT(DISTINCT sub_ord.customerNumber) <= 19
     ) 
     ORDER BY e.employeeNumber;
 """, conn)
